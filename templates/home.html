@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<title>Prediction</title>
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+<div class="card shadow p-4">
+
+<h2 class="text-center mb-4">
+Student Performance Predictor
+</h2>
+
+<form action="/predictdata" method="post">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Gender</label>
+
+<select class="form-control" name="gender">
+<option>male</option>
+<option>female</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Race/Ethnicity</label>
+
+<select class="form-control" name="race_ethnicity">
+<option>group A</option>
+<option>group B</option>
+<option>group C</option>
+<option>group D</option>
+<option>group E</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Parental Education</label>
+
+<select class="form-control" name="parental_level_of_education">
+<option>bachelor's degree</option>
+<option>master's degree</option>
+<option>associate's degree</option>
+<option>high school</option>
+<option>some college</option>
+<option>some high school</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Lunch</label>
+
+<select class="form-control" name="lunch">
+<option>standard</option>
+<option>free/reduced</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Test Preparation</label>
+
+<select class="form-control" name="test_preparation_course">
+<option>none</option>
+<option>completed</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Reading Score</label>
+
+<input type="number"
+class="form-control"
+name="reading_score"
+required>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Writing Score</label>
+
+<input type="number"
+class="form-control"
+name="writing_score"
+required>
+</div>
+
+</div>
+
+<button type="submit"
+class="btn btn-success w-100">
+Predict
+</button>
+
+</form>
+
+{% if results %}
+
+<div class="alert alert-success mt-4 text-center">
+
+<h3>
+Predicted Math Score: {{results}}
+</h3>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>

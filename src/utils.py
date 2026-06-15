@@ -3,7 +3,7 @@ import sys
 import pickle
 
 from sklearn.metrics import r2_score
-
+from sklearn.model_selection import GridSearchCV
 from src.exception import CustomException
 
 
@@ -29,17 +29,28 @@ def load_object(file_path):
         raise CustomException(e, sys)
 
 
-def evaluate_models(X_train, y_train, X_test, y_test, models):
-    """
-    Train and evaluate multiple models.
-
-    Returns:
-        report: dict containing model name and R2 score
-    """
+def evaluate_models(X_train, y_train, X_test, y_test, models, parameters):
     try:
+
         report = {}
 
-        for model_name, model in models.items():
+        for model_name in models:
+
+            model = models[model_name]
+            param = parameters[model_name]
+
+            gs = GridSearchCV(
+                model,
+                param_grid=param,
+                cv=3,
+                scoring="r2",
+                n_jobs=-1
+            )
+
+            gs.fit(X_train, y_train)
+
+            # Update model with best parameters
+            model.set_params(**gs.best_params_)
 
             model.fit(X_train, y_train)
 
@@ -51,11 +62,12 @@ def evaluate_models(X_train, y_train, X_test, y_test, models):
 
             report[model_name] = test_model_score
 
-            print(
-                f"{model_name} -> "
-                f"Train R2: {train_model_score:.4f}, "
-                f"Test R2: {test_model_score:.4f}"
-            )
+            print(f"\n{'='*50}")
+            print(f"Model: {model_name}")
+            print(f"Best Parameters: {gs.best_params_}")
+            print(f"Train R2 Score: {train_model_score:.4f}")
+            print(f"Test R2 Score: {test_model_score:.4f}")
+            print(f"{'='*50}")
 
         return report
 

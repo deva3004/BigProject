@@ -3,14 +3,19 @@ import sys
 
 from dataclasses import dataclass
 
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso, LinearRegression
+LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import (
     RandomForestRegressor,
     GradientBoostingRegressor,
-    AdaBoostRegressor
+    AdaBoostRegressor,
 )
+from xgboost import XGBRegressor
+from catboost import CatBoostRegressor
+from sklearn.linear_model import Ridge
+from sklearn.neighbors import KNeighborsRegressor
 
 from src.exception import CustomException
 from src.logger import logging
@@ -44,11 +49,63 @@ class ModelTrainer:
             y_test = test_array[:, -1]
 
             models = {
-                "Linear Regression": LinearRegression(),
-                "Decision Tree": DecisionTreeRegressor(),
-                "Random Forest": RandomForestRegressor(),
-                "Gradient Boosting": GradientBoostingRegressor(),
-                "AdaBoost": AdaBoostRegressor()
+                    "Linear Regression": LinearRegression(),
+                    "Lasso": Lasso(),
+                    "Ridge": Ridge(),
+                    "KNeighbors Regressor": KNeighborsRegressor(),
+                    "Decision Tree": DecisionTreeRegressor(),
+                    "Random Forest": RandomForestRegressor(),
+                    "Gradient Boosting": GradientBoostingRegressor(),
+                    "XGBoost": XGBRegressor(),
+                    "CatBoost": CatBoostRegressor(verbose=False),
+                    "AdaBoost": AdaBoostRegressor()
+            }
+            params = {
+
+                "Linear Regression": {
+                    "fit_intercept": [True, False]
+                },
+
+                "Lasso": {
+                    "alpha": [0.001, 0.01, 0.1, 1, 10]
+                },
+
+                "Ridge": {
+                    "alpha": [0.001, 0.01, 0.1, 1, 10]
+                },
+
+                "KNeighbors Regressor": {
+                    "n_neighbors": [3, 5, 7, 9, 11]
+                },
+
+                "Decision Tree": {
+                    "criterion": ["squared_error", "friedman_mse"],
+                    "max_depth": [5, 10, 15, 20]
+                },
+
+                "Random Forest": {
+                    "n_estimators": [100, 200],
+                    "max_depth": [10, 20, None]
+                },
+
+                "Gradient Boosting": {
+                    "n_estimators": [100, 200],
+                    "learning_rate": [0.01, 0.1]
+                },
+
+                "XGBoost": {
+                    "learning_rate": [0.01, 0.1],
+                    "n_estimators": [100, 200]
+                },
+
+                "CatBoost": {
+                    "depth": [4, 6, 8],
+                    "learning_rate": [0.01, 0.1]
+                },
+
+                "AdaBoost": {
+                    "n_estimators": [50, 100, 200]
+                }
             }
 
             model_report = evaluate_models(
@@ -56,7 +113,8 @@ class ModelTrainer:
                 y_train=y_train,
                 X_test=X_test,
                 y_test=y_test,
-                models=models
+                models=models,
+                parameters=params
             )
 
             best_model_score = max(

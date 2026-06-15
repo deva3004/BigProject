@@ -1,0 +1,4 @@
+[ 2026-06-15 10:43:51,343 ] 27 src.logger - INFO - Entered the data ingestion method
+[ 2026-06-15 10:43:51,347 ] 33 src.logger - INFO - Dataset loaded successfully
+[ 2026-06-15 10:43:51,349 ] 47 src.logger - INFO - Train-test split initiated
+[ 2026-06-15 10:43:51,353 ] 67 src.logger - INFO - Data ingestion completed successfully

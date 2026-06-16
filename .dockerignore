@@ -1,0 +1,14 @@
+venv/
+.git/
+.github/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+*.egg-info/
+catboost_info/
+logs/
+notebook/
+.ebextensions/
+*.csv
+*.log
